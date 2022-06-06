@@ -1,0 +1,10 @@
+spring:
+logging:
+  file: /logs/dev_app.log
+  level:
+    org.springframework.web: DEBUG
+    guru.springframework.controllers: DEBUG
+    org.hibernate: OFF
+  output:
+  ansi:
+    enabled: ALWAYS
