@@ -1,6 +1,7 @@
 package com.daviDev.authModule.security;
 
-import com.daviDev.authModule.security.jwt.AuthEntryPointJwt;
+import com.daviDev.authModule.security.jwt.CustomAccessDeniedHandler;
+import com.daviDev.authModule.security.jwt.CustomAuthenticationEntryPoint;
 import com.daviDev.authModule.security.jwt.AuthTokenFilter;
 import com.daviDev.authModule.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -29,7 +32,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private CustomAuthenticationEntryPoint unauthorizedHandler;
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -53,10 +58,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/api/test/all").permitAll()
+                .antMatchers("/api/test/user").hasRole("USER")
+                .antMatchers("/api/test/mod").hasRole("MODERATOR")
+                .antMatchers("/api/test/admin").hasRole("ADMIN")
                 .anyRequest().authenticated();
         return http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class).build();
     }

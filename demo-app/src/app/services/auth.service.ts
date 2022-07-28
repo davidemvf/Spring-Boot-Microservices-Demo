@@ -8,7 +8,7 @@ import { User } from "../models/user.model";
   })
 export class AuthService {
 
-    AUTH_API : string = 'http://localhost:8081/api/auth/';
+    AUTH_API : string = 'http://localhost:8080/api/auth/';
     httpOptions : any = {
         headers: new HttpHeaders({'Content-Type': 'application/json'})
     };

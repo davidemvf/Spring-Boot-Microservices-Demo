@@ -17,6 +17,7 @@ export class BoardModeratorComponent implements OnInit {
         this.content = data;
       },
       err => {
+        console.log("Error: ", JSON.parse(err.error).message);
         this.content = JSON.parse(err.error).message;
       }
     );

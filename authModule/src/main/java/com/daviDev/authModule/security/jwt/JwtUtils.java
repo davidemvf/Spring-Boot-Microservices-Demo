@@ -13,10 +13,13 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+
     @Value("${daviDev.app.jwtSecret}")
     private String jwtSecret;
+
     @Value("${daviDev.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         return Jwts.builder()

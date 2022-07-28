@@ -112,8 +112,8 @@
 					<dockerHost>http://localhost:2375</dockerHost>
 					<images>
 						<image>
-							<name>dinosaur-engine:%l</name>
-							<alias>dinosaur-engine</alias>
+							<name>dinosaur-service</name>
+							<alias>dinosaur-service</alias>
 							<build>
 								<dockerFileDir>${basedir}</dockerFileDir>
 							</build>
@@ -123,7 +123,7 @@
 									<version>${project.version}</version>
 								</labels>
 								<ports>
-									<port>8080:8080</port>
+									<port>8084:8080</port>
 								</ports>
 								<log>
 									<prefix>DINOSAUR# </prefix>
